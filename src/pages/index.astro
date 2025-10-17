@@ -117,7 +117,9 @@ const iconLinks: { label: string; href: string; icon: keyof typeof iconPaths }[]
 	}
 
 	.hero img {
-		aspect-ratio: 5 / 4;
+		width: 100%;
+		max-width: 320px;
+		height: auto;
 		object-fit: cover;
 		object-position: top;
 		border-radius: 1.5rem;
