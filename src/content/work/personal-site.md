@@ -1,10 +1,10 @@
 ---
-title: Portfolio Site
+title: Personal Site
 publishDate: 2025-10-10 00:00:00
 img: /assets/site-ss.png
 img_alt: This site's screenshot.
 description: |
-    ポートフォリオサイト
+    自作のWebサイト
 tags:
   - Dev
   - Frontend

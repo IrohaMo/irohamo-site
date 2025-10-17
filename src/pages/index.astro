@@ -10,7 +10,7 @@ import Icon from '../components/Icon.astro';
 import Pill from '../components/Pill.astro';
 import About from '../components/About.astro';
 import PortfolioPreview from '../components/PortfolioPreview.astro';
-// Layout import — provides basic page elements: <head>, <nav>, <footer> etc.
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 // Content Fetching: List four most recent work projects
@@ -19,6 +19,9 @@ const projects = (await getCollection('work'))
 	.slice(0, 4);
 
 import type { iconPaths } from '../components/IconPaths';
+
+
+const portrait="/assets/portrait.jpg";
 
 const iconLinks: { label: string; href: string; icon: keyof typeof iconPaths }[] = [
   { label: 'GitHub', href: 'https://github.com/IrohaMo', icon: 'github-logo' },
@@ -50,11 +53,14 @@ const iconLinks: { label: string; href: string; icon: keyof typeof iconPaths }[]
  	 					</div>
 					</div>
 				</Hero>
-				<img
-					alt=""
-					width="480"
-					height="620"
-					src="/assets/portrait.jpg"
+				<Image
+					src={portrait}
+					alt="me holding the shamisen."
+					width={480}
+					height={620}
+					loading="eager"
+					format="webp"
+					sizes="(max-width: 768px) 100vw, 480px"
 				/>
 			</header>
 			<About />
@@ -152,34 +158,6 @@ const iconLinks: { label: string; href: string; icon: keyof typeof iconPaths }[]
 	.section {
 		display: grid;
 		gap: 2rem;
-	}
-
-	.with-background {
-		position: relative;
-	}
-
-	.with-background::before {
-		--hero-bg: var(--bg-image-subtle-2);
-
-		content: '';
-		position: absolute;
-		pointer-events: none;
-		left: 50%;
-		width: 100vw;
-		aspect-ratio: calc(2.25 / var(--bg-scale));
-		top: 0;
-		transform: translateY(-75%) translateX(-50%);
-		background:
-			url('/assets/backgrounds/noise.png') top center/220px repeat,
-			var(--hero-bg) center center / var(--bg-gradient-size) no-repeat,
-			var(--gray-999);
-		background-blend-mode: overlay, normal, normal, normal;
-		mix-blend-mode: var(--bg-blend-mode);
-		z-index: -1;
-	}
-
-	.with-background.bg-variant::before {
-		--hero-bg: var(--bg-image-subtle-1);
 	}
 
 	.section-header {

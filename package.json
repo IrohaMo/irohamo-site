@@ -13,6 +13,10 @@
     "@astrojs/rss": "^4.0.12",
     "astro": "^5.14.1",
     "devicon": "^2.17.0",
+    "p5": "^2.0.5",
     "preact": "^10.27.2"
+  },
+  "devDependencies": {
+    "@types/p5": "^1.7.6"
   }
 }

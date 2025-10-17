@@ -1,0 +1,106 @@
+<div id="p5-container"></div>
+
+<!-- p5.js をCDNから読み込み -->
+<script is:client src="https://cdn.jsdelivr.net/npm/p5@1.9.3/lib/p5.min.js"></script>
+
+<!-- スケッチ本体 -->
+<script is:client>
+	const sketch = (p) => {
+		let particles = [];
+		let theme = "dark";
+
+		// 粒子の数（パフォーマンスに合わせて調整）
+		const COUNT = 200;
+
+		const colors = {
+			dark: {
+				bg: [0, 0, 0, 10],
+				hueBase: 210,
+				hueRange: 60,
+			},
+			light: {
+				bg: [0, 0, 100, 10],
+				hueBase: 30,
+				hueRange: 50,
+			},
+		};
+
+		class Particle {
+			constructor() {
+				this.x = p.random(p.width);
+				this.y = p.random(p.height);
+				this.z = p.random(0.5, 2.5); // 粒子ごとの速度や輝度
+				this.hueOffset = p.random(100);
+			}
+
+			update(t) {
+			// パーリンノイズでなめらかな動き
+			const angle = p.noise(this.x * 0.001, this.y * 0.001, t * 0.1) * p.TWO_PI * 4;
+			this.x += Math.cos(angle) * this.z;
+			this.y += Math.sin(angle) * this.z;
+
+			// 端に行ったら反対側へ
+			if (this.x < 0) this.x = p.width;
+			if (this.x > p.width) this.x = 0;
+			if (this.y < 0) this.y = p.height;
+			if (this.y > p.height) this.y = 0;
+			}
+
+			draw(hueBase, hueRange) {
+				const hue = hueBase + Math.sin((this.hueOffset + p.frameCount * 0.01)) * hueRange;
+				const size = this.z * 2;
+				p.fill(hue, 80, 100, 40);
+				p.circle(this.x, this.y, size);
+			}
+		}
+
+		p.setup = function () {
+			p.createCanvas(p.windowWidth, p.windowHeight);
+			p.noStroke();
+			p.colorMode(p.HSB, 360, 100, 100, 100);
+			for (let i = 0; i < COUNT; i++) {
+				particles.push(new Particle());
+			}
+		};
+
+		p.draw = function () {
+			const isDark = document.documentElement.classList.contains("theme-dark");
+			theme = isDark ? "dark" : "light";
+			const c = colors[theme];
+
+			// 背景フェード
+			p.fill(...c.bg);
+			p.rect(0, 0, p.width, p.height);
+
+			// 粒子の描画
+			for (let i = 0; i < particles.length; i++) {
+				particles[i].update(p.frameCount * 0.002);
+				particles[i].draw(c.hueBase, c.hueRange);
+			}
+		};
+
+		p.windowResized = function () {
+			p.resizeCanvas(p.windowWidth, p.windowHeight);
+			particles = [];
+			for (let i = 0; i < COUNT; i++) {
+				particles.push(new Particle());
+			}
+		};
+	};
+	new p5(sketch, "p5-container");
+</script>
+
+<style>
+	#p5-container {
+		position: fixed;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+		overflow: hidden;
+	}
+	canvas {
+		display: block;
+		position: absolute;
+		inset: 0;
+	}
+</style>
