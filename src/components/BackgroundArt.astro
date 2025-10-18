@@ -6,88 +6,111 @@
 <!-- スケッチ本体 -->
 <script is:client>
 	const sketch = (p) => {
-		let particles = [];
-		let theme = "dark";
+		const layers = [];
+		const LAYER_COUNT = 3;
 
-		// 粒子の数（パフォーマンスに合わせて調整）
-		const COUNT = 300;
-
-		const colors = {
-			dark: {
-				bg: [0, 0, 0, 10],
-				hueBase: 210,
-				hueRange: 60,
-			},
-			light: {
-				bg: [0, 0, 100, 10],
-				hueBase: 30,
-				hueRange: 50,
-			},
+		// テーマ別のカラーパレット
+		const palettes = {
+			dark: [220, 250, 280, 320], // 青〜紫系
+			light: [30, 180, 300], // 橙〜水色〜ピンク系
 		};
 
-		class Particle {
-			constructor() {
-				this.x = p.random(p.width);
-				this.y = p.random(p.height);
-				this.z = p.random(0.5, 2.5); // 粒子ごとの速度や輝度
-				this.hueOffset = p.random(100);
-			}
+		// 現在のテーマ判定
+		const getTheme = () =>
+			document.documentElement.classList.contains("theme-dark")
+			? "dark"
+			: "light";
 
-			update(t) {
-			// パーリンノイズでなめらかな動き
-			const n = p.noise(this.x * 0.001, this.y * 0.001, t * 0.1) * p.TWO_PI * 4;
-			const angle = (n - 0.5) * p.TWO_PI * 2;
-			this.x += Math.cos(angle) * this.z;
-			this.y += Math.sin(angle) * this.z;
-
-			// 端に行ったら反対側へ
-			if (this.x < 0) this.x = p.width;
-			if (this.x > p.width) this.x = 0;
-			if (this.y < 0) this.y = p.height;
-			if (this.y > p.height) this.y = 0;
-			}
-
-			draw(hueBase, hueRange) {
-				const hue = hueBase + Math.sin((this.hueOffset + p.frameCount * 0.01)) * hueRange;
-				const size = this.z * 2;
-				p.fill(hue, 80, 100, 40);
-				p.circle(this.x, this.y, size);
-			}
-		}
-
-		p.setup = function () {
+		p.setup = () => {
 			p.createCanvas(p.windowWidth, p.windowHeight);
 			p.noStroke();
 			p.colorMode(p.HSB, 360, 100, 100, 100);
-			for (let i = 0; i < COUNT; i++) {
-				particles.push(new Particle());
+
+			// 🟩 初期描画で真っ先に背景を1回塗る
+			const isDark = document.documentElement.classList.contains("theme-dark");
+			if (isDark) {
+				p.background(0, 0, 8); // 真っ黒ではなく柔らかい黒
+			} else {
+				p.background(0, 0, 100); // 白背景
+			}
+
+			// 🟩 光レイヤーを初期化
+			for (let i = 0; i < LAYER_COUNT; i++) {
+				layers.push({
+				hue: p.random(isDark ? [220, 250, 280, 320] : [30, 180, 300]),
+				yoff: p.random(1000),
+				amp: p.random(100, 220),
+				alpha: p.random(6, 12),
+				speed: p.random(0.0001, 0.0002),
+				});
 			}
 		};
 
-		p.draw = function () {
-			const isDark = document.documentElement.classList.contains("theme-dark");
-			theme = isDark ? "dark" : "light";
-			const c = colors[theme];
+		p.draw = () => {
+			const theme = getTheme();
+			const colors = palettes[theme];
 
-			// 背景フェード
-			p.fill(...c.bg);
+			// 背景
+			if (theme === "dark") {
+				p.fill(0, 0, 8, 10); // 深い黒寄り
+			} else {
+				p.fill(0, 0, 100, 10); // 白に近い
+			}
 			p.rect(0, 0, p.width, p.height);
 
-			// 粒子の描画
-			for (let i = 0; i < particles.length; i++) {
-				particles[i].update(p.frameCount * 0.002);
-				particles[i].draw(c.hueBase, c.hueRange);
+			// 波レイヤー
+			for (let l of layers) {
+				// テーマに応じてランダムHueを設定（動的変化）
+				if (p.frameCount % 300 === 0) {
+					l.hue += 0.05; // 徐々に変化
+					if (l.hue > 360) l.hue -= 360;
+				}
+
+				const hue = l.hue || p.random(colors);
+				const sat = theme === "dark" ? 60 : 30;
+				const bright = theme === "dark" ? 90 : 95;
+				const alpha = l.alpha;
+
+				p.fill(hue, sat, bright, alpha);
+
+				p.beginShape();
+				for (let x = 0; x <= p.width; x += 10) {
+					const y =
+					p.height / 2 +
+					p.sin(x * 0.002 + l.yoff) * l.amp * 0.6 +
+					p.noise(x * 0.002, p.frameCount * l.speed) * l.amp;
+					p.vertex(x, y);
+				}
+				p.vertex(p.width, p.height);
+				p.vertex(0, p.height);
+				p.endShape(p.CLOSE);
+
+				l.yoff += l.speed * 100;
 			}
+
+			// 上部グラデーション（光の霞）
+			const g = p.drawingContext.createLinearGradient(
+				0,
+				0,
+				0,
+				p.height * 0.8
+			);
+			if (theme === "dark") {
+				g.addColorStop(0, "hsla(250, 80%, 70%, 0.08)");
+				g.addColorStop(1, "hsla(210, 60%, 5%, 0)");
+			} else {
+				g.addColorStop(0, "hsla(50, 90%, 95%, 0.1)");
+				g.addColorStop(1, "hsla(200, 80%, 70%, 0)");
+			}
+			p.drawingContext.fillStyle = g;
+			p.rect(0, 0, p.width, p.height);
 		};
 
-		p.windowResized = function () {
+		p.windowResized = () => {
 			p.resizeCanvas(p.windowWidth, p.windowHeight);
-			particles = [];
-			for (let i = 0; i < COUNT; i++) {
-				particles.push(new Particle());
-			}
 		};
 	};
+
 	new p5(sketch, "p5-container");
 </script>
 
