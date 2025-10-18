@@ -5,6 +5,7 @@
 
 <!-- スケッチ本体 -->
 <script is:client>
+
 	const sketch = (p) => {
 		const layers = [];
 		const LAYER_COUNT = 3;
@@ -20,12 +21,16 @@
 			document.documentElement.classList.contains("theme-dark")
 			? "dark"
 			: "light";
+		
+		// 📱 高さを正しく取る関数（スマホ対応）
+ 		const getSafeHeight = () => window.visualViewport ? window.visualViewport.height : window.innerHeight;
 
 		p.setup = () => {
-			const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-			p.createCanvas(p.windowWidth, vh);
+			p.createCanvas(p.windowWidth, getSafeHeight());
 			p.noStroke();
 			p.colorMode(p.HSB, 360, 100, 100, 100);
+			p.frameRate(30);
+    		p.blendMode(p.BLEND);
 
 			// 🟩 初期描画で真っ先に背景を1回塗る
 			const isDark = document.documentElement.classList.contains("theme-dark");
@@ -38,38 +43,28 @@
 			// 🟩 光レイヤーを初期化
 			for (let i = 0; i < LAYER_COUNT; i++) {
 				layers.push({
-				hue: p.random(isDark ? [220, 250, 280, 320] : [30, 180, 300]),
-				yoff: p.random(1000),
-				amp: p.random(100, 220),
-				alpha: p.random(6, 12),
-				speed: p.random(0.0001, 0.0002),
+					hue: p.random(isDark ? [220, 250, 280, 320] : [30, 180, 300]),
+					yoff: p.random(1000),
+					amp: p.random(100, 280),
+					alpha: p.random(4, 12),
+					speed: p.random(0.0001, 0.0002),
 				});
 			}
 		};
-
-		p.windowResized = () => {
-			const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-			p.resizeCanvas(p.windowWidth, vh);
-		};
-
-		if (window.visualViewport) {
-			window.visualViewport.addEventListener("resize", () => {
-				const vh = window.visualViewport.height;
-				p.resizeCanvas(p.windowWidth, vh);
-			});
-		}
 		
 		p.draw = () => {
 			const theme = getTheme();
 			const colors = palettes[theme];
 
 			// 背景
+			p.blendMode(p.MULTIPLY);
 			if (theme === "dark") {
 				p.fill(0, 0, 8, 10); // 深い黒寄り
 			} else {
 				p.fill(0, 0, 100, 10); // 白に近い
 			}
 			p.rect(0, 0, p.width, p.height);
+			p.blendMode(p.BLEND);
 
 			// 波レイヤー
 			for (let l of layers) {
@@ -81,7 +76,7 @@
 
 				const hue = l.hue || p.random(colors);
 				const sat = theme === "dark" ? 60 : 30;
-				const bright = theme === "dark" ? 90 : 95;
+				const bright = 50 + 20 * Math.sin(p.frameCount * 0.002); // 明るさゆっくり変化
 				const alpha = l.alpha;
 
 				p.fill(hue, sat, bright, alpha);
@@ -101,13 +96,9 @@
 				l.yoff += l.speed * 100;
 			}
 
+			p.noStroke();
 			// 上部グラデーション（光の霞）
-			const g = p.drawingContext.createLinearGradient(
-				0,
-				0,
-				0,
-				p.height * 0.8
-			);
+			const g = p.drawingContext.createLinearGradient(0, 0, 0, p.height);
 			if (theme === "dark") {
 				g.addColorStop(0, "hsla(250, 80%, 70%, 0.08)");
 				g.addColorStop(1, "hsla(210, 60%, 5%, 0)");
@@ -119,9 +110,17 @@
 			p.rect(0, 0, p.width, p.height);
 		};
 
-		p.windowResized = () => {
-			p.resizeCanvas(p.windowWidth, p.windowHeight);
+		// 📱 スマホUI変動にも追従（ちらつき防止付き）
+		const resize = () => {
+			const h = getSafeHeight();
+			if (p.height !== h || p.width !== p.windowWidth) {
+			p.resizeCanvas(p.windowWidth, h);
+			}
 		};
+		p.windowResized = resize;
+		if (window.visualViewport) {
+			window.visualViewport.addEventListener("resize", resize);
+		}
 	};
 
 	new p5(sketch, "p5-container");
@@ -132,7 +131,7 @@
 		position: fixed;
 		inset: 0;
 		width: 100%;
-		height: 100dvh; /* ← 重要！ “動的なビューポート高” */
+		height: 100%;
 		z-index: -1;
 		pointer-events: none;
 		overflow: hidden;
@@ -142,5 +141,8 @@
 		position: absolute;
 		inset: 0;
 		object-fit: cover;
+		backface-visibility: hidden;
+		transform: translateZ(0);
+		will-change: transform;
 	}
 </style>
