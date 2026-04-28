@@ -38,7 +38,7 @@ const publishDate = entry.data.publishDate.toLocaleDateString('ja-JP', {
 							<div class="meta">
 								<p class="publish-date">{publishDate}</p>
 								<div class="tags">
-									{entry.data.tags.map((tag) => <Pill>{tag}</Pill>)}
+									{entry.data.tags.map((tag) => <Pill variant="tag">{tag}</Pill>)}
 								</div>
 							</div>
 							<p class="description">{entry.data.description}</p>

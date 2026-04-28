@@ -1,8 +1,17 @@
-<div class="pill"><slot /></div>
+---
+interface Props {
+	variant?: 'default' | 'tag';
+}
+
+const { variant = 'default' } = Astro.props;
+---
+
+<div class:list={['pill', variant === 'tag' && 'pill--tag']}><slot /></div>
 
 <style>
 	.pill {
 		display: flex;
+		align-items: center;
 		padding: 0.5rem 1rem;
 		gap: 0.5rem;
 		color: var(--accent-text-over);
@@ -12,5 +21,21 @@
 		font-size: var(--text-md);
 		line-height: 1.35;
 		white-space: nowrap;
+	}
+
+	/* Tag variant: looks like a label, not a button */
+	.pill--tag {
+		background-color: transparent;
+		color: var(--gray-300);
+		border-color: var(--gray-700);
+		font-size: var(--text-sm);
+		padding: 0.25rem 0.625rem;
+		letter-spacing: 0.02em;
+	}
+
+	.pill--tag::before {
+		content: '#';
+		opacity: 0.5;
+		font-weight: 600;
 	}
 </style>
