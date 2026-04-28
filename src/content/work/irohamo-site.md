@@ -6,9 +6,8 @@ img_alt: IrohaMo favicon.
 description: |
     自作のWebサイト
 tags:
-  - Dev
+  - InDev
   - Frontend
-  - Backend
 ---
 
 ポートフォリオサイト
