@@ -1,12 +1,12 @@
 ---
 interface Props {
-	variant?: 'default' | 'tag';
+	variant?: 'default' | 'tag' | 'badge';
 }
 
 const { variant = 'default' } = Astro.props;
 ---
 
-<div class:list={['pill', variant === 'tag' && 'pill--tag']}><slot /></div>
+<div class:list={['pill', variant === 'tag' && 'pill--tag', variant === 'badge' && 'pill--badge']}><slot /></div>
 
 <style>
 	.pill {
@@ -37,5 +37,15 @@ const { variant = 'default' } = Astro.props;
 		content: '#';
 		opacity: 0.5;
 		font-weight: 600;
+	}
+
+	/* Badge variant: role label with icon, no '#', no button look */
+	.pill--badge {
+		background-color: transparent;
+		color: var(--gray-200);
+		border-color: var(--accent-dark);
+		font-size: var(--text-sm);
+		padding: 0.3rem 0.75rem;
+		letter-spacing: 0.03em;
 	}
 </style>
