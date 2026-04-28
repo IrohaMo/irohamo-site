@@ -46,15 +46,15 @@ const iconLikeStyle = isIconLikeImage
 			<main class="wrapper">
 				<div class="stack gap-10 content">
 					{
-						entry.data.img && (
-							<img
-								class:list={{ 'icon-like': isIconLikeImage }}
-								src={entry.data.img}
-								alt={entry.data.img_alt || ''}
-								style={iconLikeStyle}
-							/>
-						)
-					}
+					entry.data.img && (
+						<img
+							class:list={{ 'icon-like': isIconLikeImage }}
+							src={entry.data.img}
+							alt={entry.data.img_alt || ''}
+							style={iconLikeStyle}
+						/>
+					)
+				}
 					<div class="content">
 						<Content components={{ XPostEmbed }} />
 					</div>

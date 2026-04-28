@@ -14,6 +14,7 @@ export const collections = {
 			img_alt: z.string().optional(),
 		}),
 	}),
+
     article: defineCollection({
         loader: glob({ base: './src/content/article', pattern: '**/*.{md,mdx}' }),
         schema: z.object({
