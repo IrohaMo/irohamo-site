@@ -120,13 +120,24 @@
 			p.rect(0, 0, p.width, p.height);
 		};
 
-		// 📱 スマホUI変動にも追従（ちらつき防止付き）
+		// 📱 スマホのアドレスバー表示切替によるリサイズを無視してチラつきを防止
+		let initialHeight = getSafeHeight();
+		let resizeTimer = null;
+
 		const resize = () => {
-			const h = getSafeHeight();
-			if (p.height !== h || p.width !== p.windowWidth) {
-			p.resizeCanvas(p.windowWidth, h);
-			}
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(() => {
+				const newW = window.innerWidth;
+				const newH = getSafeHeight();
+				const heightDiff = Math.abs(newH - p.height);
+				const widthChanged = newW !== p.width;
+				// 高さが150px未満の変化（アドレスバーの出入り）は無視する
+				if (widthChanged || heightDiff > 150) {
+					p.resizeCanvas(newW, newH);
+				}
+			}, 200);
 		};
+
 		p.windowResized = resize;
 		if (window.visualViewport) {
 			window.visualViewport.addEventListener("resize", resize);

@@ -4,10 +4,6 @@ import Hero from './Hero.astro';
 
 <div class="stack gap-20">
 	<main class="wrapper about">
-		<Hero
-			title="About"
-		/>
-
 		<section>
 			<h2 class="section-title">Background</h2>
 			<div class="content">
@@ -19,21 +15,56 @@ import Hero from './Hero.astro';
 				</p>
 			</div>
 		</section>
+
 		<section>
 			<h2 class="section-title">Education</h2>
 			<div class="content">
 				<p>早稲田大学基幹理工学部 在学中 / 42Tokyo 在籍中</p>
 			</div>
 		</section>
+
 		<section>
 			<h2 class="section-title">Skills</h2>
 			<div class="content">
-				<img src="/assets/icons/c-original.svg" width="50" height="50" alt="C" style="margin-right:10px;" loading="lazy"/>
-				<img src="/assets/icons/swift-original.svg" width="50" height="50" alt="Swift" style="margin-right:10px;" loading="lazy" />
-				<img src="/assets/icons/javascript-original.svg" width="50" height="50" alt="JavaScript" style="margin-right:10px;" loading="lazy" />
-				<img src="/assets/icons/html5-original.svg" width="50" height="50" alt="HTML5" style="margin-right:10px;" loading="lazy" />
-				<img src="/assets/icons/css3-original.svg" width="50" height="50" alt="CSS3" style="margin-right:10px;" loading="lazy" />
-				<img src="/assets/icons/unity-original.svg" width="50" height="50" alt="Unity" style="margin-right:10px;" loading="lazy" />
+				<div class="skills-grid">
+					<div class="skill-group">
+						<h3>Frontend Web</h3>
+						<ul>
+							<li>React / Next.js / Astro</li>
+						</ul>
+					</div>
+
+					<div class="skill-group">
+						<h3>Mobile</h3>
+						<ul>
+							<li>React Native (Expo)</li>
+						</ul>
+					</div>
+
+					<div class="skill-group">
+						<h3>Backend / API</h3>
+						<ul>
+							<li>Firebase / Firestore</li>
+							<li>Cloud Run</li>
+						</ul>
+					</div>
+
+					<div class="skill-group">
+						<h3>Infrastructure</h3>
+						<ul>
+							<li>Vercel</li>
+						</ul>
+					</div>
+
+					<div class="skill-group">
+						<h3>Languages</h3>
+						<ul>
+							<li>TypeScript / JavaScript</li>
+							<li>Python</li>
+							<li>Swift</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</section>
 	</main>
@@ -44,12 +75,6 @@ import Hero from './Hero.astro';
 		display: flex;
 		flex-direction: column;
 		gap: 3.5rem;
-	}
-
-	img {
-		margin-top: 0;
-		border-radius: 0;
-		box-shadow: none;
 	}
 
 	section {
@@ -67,6 +92,26 @@ import Hero from './Hero.astro';
 
 	.content {
 		grid-column: 2 / 4;
+	}
+
+	.skills-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		gap: 2rem;
+	}
+
+	.skill-group h3 {
+		font-size: var(--text-md);
+		color: var(--gray-0);
+		margin-bottom: 0.5rem;
+	}
+
+	.skill-group ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		color: var(--gray-300);
+		font-size: var(--text-sm);
 	}
 
 	.content :global(a) {
