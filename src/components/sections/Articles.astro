@@ -11,7 +11,7 @@ const articles = (await getCollection('article'))
 ---
 
 <section class="section with-background">
-    <header class="section-header stack gap-2 lg:gap-4">
+    <header class="section-header articles-header">
         <h3>Articles</h3>
         <a href="/articles">すべて見る</a>
     </header>
@@ -28,3 +28,38 @@ const articles = (await getCollection('article'))
         </Grid>
     </div>
 </section>
+
+<style>
+    .articles-header {
+        display: flex;
+        width: 100%;
+        max-width: none;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1rem;
+        text-align: left;
+    }
+
+    .articles-header a {
+        flex: 0 0 auto;
+        margin-bottom: 0.25rem;
+        color: var(--accent-dark);
+        font-family: var(--font-brand);
+        font-size: var(--text-sm);
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .articles-header a:hover,
+    .articles-header a:focus {
+        color: var(--accent-regular);
+    }
+
+    @media (min-width: 50em) {
+        .articles-header {
+            max-width: 50ch;
+            justify-self: center;
+            text-align: center;
+        }
+    }
+</style>

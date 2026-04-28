@@ -1,0 +1,136 @@
+---
+import Icon from '../ui/Icon.astro';
+
+const skillGroups = [
+	{
+		title: 'Frontend Web',
+		items: ['React / Next.js / Astro'],
+		icon: 'code',
+	},
+	{
+		title: 'Mobile',
+		items: ['React Native (Expo)'],
+		icon: 'rocket-launch',
+	},
+	{
+		title: 'Backend / API',
+		items: ['Firebase / Firestore', 'Cloud Run'],
+		icon: 'terminal-window',
+	},
+	{
+		title: 'Infrastructure',
+		items: ['Vercel'],
+		icon: 'strategy',
+	},
+	{
+		title: 'Languages',
+		items: ['TypeScript / JavaScript', 'Python', 'Swift', 'C / C++'],
+		icon: 'pencil-line',
+	},
+];
+---
+
+<div class="skills-grid">
+	{skillGroups.map((group) => (
+		<div class="skill-card">
+			<div class="card-header">
+				<span class="icon-frame">
+					<Icon icon={group.icon} size="1.2rem" />
+				</span>
+				<h3>{group.title}</h3>
+			</div>
+			<ul>
+				{group.items.map((item) => (
+					<li>{item}</li>
+				))}
+			</ul>
+		</div>
+	))}
+</div>
+
+<style>
+	.skills-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+		gap: 0.875rem;
+	}
+
+	.skill-card {
+		display: flex;
+		min-height: 10rem;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 1.25rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 1rem;
+		padding: 1rem;
+		box-shadow: var(--shadow-sm);
+		transition:
+			box-shadow var(--theme-transition),
+			transform var(--theme-transition),
+			border-color var(--theme-transition);
+	}
+
+	.skill-card:hover {
+		border-color: var(--gray-700);
+		box-shadow: var(--shadow-md);
+		transform: translateY(-2px);
+	}
+
+	.card-header {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.icon-frame {
+		display: inline-grid;
+		flex: 0 0 auto;
+		width: 2.25rem;
+		height: 2.25rem;
+		place-items: center;
+		color: var(--accent-regular);
+		background: var(--accent-subtle-overlay);
+		border: 1px solid var(--accent-overlay);
+		border-radius: 0.625rem;
+	}
+
+	h3 {
+		font-size: var(--text-base);
+		font-weight: 600;
+		color: var(--gray-100);
+		font-family: var(--font-brand);
+		margin: 0;
+	}
+
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	li {
+		font-size: var(--text-sm);
+		line-height: 1.2;
+		color: var(--gray-300);
+		padding: 0.35rem 0.55rem;
+		background: var(--gray-999_40);
+		border-radius: 999px;
+		border: 1px solid var(--gray-800);
+	}
+
+	@media (min-width: 50em) {
+		.skills-grid {
+			gap: 1rem;
+		}
+
+		.skill-card {
+			padding: 1.25rem;
+		}
+	}
+</style>

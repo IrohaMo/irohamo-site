@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 
 import ContactCTA from '../../components/sections/ContactCTA.astro';
@@ -22,7 +23,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const isIconLikeImage = /(?:app[-_ ]?icon|icon)/i.test(entry.data.img);
+const isIconLikeImage = /(?:app[-_ ]?icon|icon|favicon)/i.test(entry.data.img.src);
 const iconLikeStyle = isIconLikeImage
     ? 'object-fit: contain; background: transparent; border: 0; box-shadow: none;'
     : undefined;
@@ -46,15 +47,17 @@ const iconLikeStyle = isIconLikeImage
 			<main class="wrapper">
 				<div class="stack gap-10 content">
 					{
-						entry.data.img && (
-							<img
-								class:list={{ 'icon-like': isIconLikeImage }}
-								src={entry.data.img}
-								alt={entry.data.img_alt || ''}
-								style={iconLikeStyle}
-							/>
-						)
-					}
+					entry.data.img && (
+						<Image
+							class:list={{ 'icon-like': isIconLikeImage }}
+							src={entry.data.img}
+							alt={entry.data.img_alt || ''}
+							widths={[288, 384, 544, 768]}
+							sizes="min(100vw - 3rem, 24rem)"
+							style={iconLikeStyle}
+						/>
+					)
+				}
 					<div class="content">
 						<Content components={{ XPostEmbed }} />
 					</div>

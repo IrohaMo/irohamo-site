@@ -1,7 +1,7 @@
 ---
 title: IrohaMo Site
 publishDate: 2025-10-10 00:00:00
-img: /assets/favicon.svg
+img: ../../assets/work/favicon.svg
 img_alt: IrohaMo favicon.
 description: |
     自作のWebサイト

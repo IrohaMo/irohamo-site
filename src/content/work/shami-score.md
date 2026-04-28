@@ -1,7 +1,7 @@
 ---
 title: Shami Score
 publishDate: 2025-10-15 17:30:00
-img: /assets/ShamiScoreAppIcon-iOS-Default-1024x1024@1x.png
+img: ../../assets/work/ShamiScoreAppIcon-iOS-Default-1024x1024@1x.png
 description: |
     三味線採譜用アプリ
 tags:
