@@ -3,44 +3,121 @@ import CallToAction from '../ui/CallToAction.astro';
 import Icon from '../ui/Icon.astro';
 ---
 
-<aside>
-	<h2>Interested in working together?</h2>
-	<CallToAction href="mailto:irohamo@irohamo.dev">
-		Send Me a Message
-		<Icon icon="paper-plane-tilt" size="1.2em" />
-	</CallToAction>
-</aside>
+<section id="contact" class="contact">
+	<div class="contact-inner wrapper">
+		<div class="copy stack gap-2">
+			<h2>Contact</h2>
+			<p>
+				制作・開発の相談、アプリや音楽まわりの話など、気軽にメッセージしてください。
+			</p>
+		</div>
+
+		<div class="actions">
+			<CallToAction href="mailto:irohamo@irohamo.dev">
+				Send an Email
+				<Icon icon="paper-plane-tilt" size="1.2em" />
+			</CallToAction>
+			<div class="socials" aria-label="Social links">
+				<a href="https://github.com/IrohaMo" target="_blank" rel="noopener noreferrer">
+					<Icon icon="github-logo" size="1.25em" />
+					<span>GitHub</span>
+				</a>
+				<a href="https://Instagram.com/irohamo.dev" target="_blank" rel="noopener noreferrer">
+					<Icon icon="instagram-logo" size="1.25em" />
+					<span>Instagram</span>
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
 
 <style>
-	aside {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 3rem;
+	.contact {
 		border-top: 1px solid var(--gray-800);
 		border-bottom: 1px solid var(--gray-800);
-		padding: 5rem 1.5rem;
-		background-color: var(--gray-999_40);
+		background:
+			linear-gradient(180deg, transparent, var(--gray-999_40)),
+			var(--gray-999_40);
 		box-shadow: var(--shadow-sm);
 	}
 
+	.contact-inner {
+		display: grid;
+		gap: 2.5rem;
+		padding-block: 5rem;
+	}
+
+	.copy {
+		max-width: 42rem;
+	}
+
 	h2 {
-		font-size: var(--text-xl);
-		text-align: center;
-		max-width: 15ch;
+		color: var(--gray-0);
+		font-size: var(--text-3xl);
+	}
+
+	p {
+		color: var(--gray-300);
+		font-size: var(--text-md);
+	}
+
+	.actions {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1.5rem;
+	}
+
+	.socials {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.socials a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		border: 1px solid var(--gray-800);
+		border-radius: 999rem;
+		padding: 0.65rem 1rem;
+		background-color: var(--gray-999_40);
+		color: var(--gray-200);
+		font-family: var(--font-brand);
+		font-size: var(--text-sm);
+		font-weight: 600;
+		text-decoration: none;
+		box-shadow: var(--shadow-sm);
+		transition:
+			border-color var(--theme-transition),
+			color var(--theme-transition),
+			background-color var(--theme-transition);
+	}
+
+	.socials a:hover,
+	.socials a:focus {
+		border-color: var(--accent-regular);
+		background-color: var(--accent-subtle-overlay);
+		color: var(--gray-0);
 	}
 
 	@media (min-width: 50em) {
-		aside {
-			padding: 7.5rem;
-			flex-direction: row;
-			flex-wrap: wrap;
-			justify-content: space-between;
+		.contact-inner {
+			grid-template-columns: minmax(0, 1fr) auto;
+			align-items: center;
+			padding-block: 7.5rem;
 		}
 
 		h2 {
-			font-size: var(--text-3xl);
-			text-align: left;
+			font-size: var(--text-4xl);
+		}
+
+		p {
+			font-size: var(--text-lg);
+		}
+
+		.actions {
+			align-items: flex-end;
 		}
 	}
 </style>
