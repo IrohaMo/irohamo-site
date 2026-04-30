@@ -5,7 +5,7 @@ img: ../../assets/work/ShamiScoreAppIcon-iOS-Default-1024x1024@1x.png
 description: |
     三味線に特化した採譜アプリ
 tags:
-  - InDev
+  - Ongoing
   - Frontend
   - Backend
 ---
