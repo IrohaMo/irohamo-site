@@ -104,8 +104,11 @@ const publishDate = entry.data.publishDate.toLocaleDateString('ja-JP', {
 	}
 
 	.content {
+		width: 100%;
 		max-width: 65ch;
 		margin-inline: auto;
+		min-width: 0;
+		overflow-wrap: anywhere;
 	}
 
 	.content > :global(* + *) {
@@ -148,6 +151,27 @@ const publishDate = entry.data.publishDate.toLocaleDateString('ja-JP', {
 		padding-inline-start: 1.5rem;
 		border-inline-start: 0.25rem solid var(--accent-dark);
 		color: var(--gray-0);
+	}
+
+	.content :global(pre),
+	.content :global(table) {
+		max-width: 100%;
+		overflow-x: auto;
+	}
+
+	.content :global(pre) {
+		padding: 1rem;
+		border-radius: 0.5rem;
+		background: var(--gray-900);
+	}
+
+	.content :global(code) {
+		overflow-wrap: anywhere;
+	}
+
+	.content :global(pre code) {
+		overflow-wrap: normal;
+		white-space: pre;
 	}
 
 	@media (min-width: 50em) {
