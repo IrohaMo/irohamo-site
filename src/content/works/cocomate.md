@@ -3,6 +3,7 @@ title: "ココメイト"
 description: "疲労・睡眠・移動時間を考慮して、無理のない予定管理を支援するモバイルアプリ"
 publishDate: 2026-03-22
 tags:
+  - Hackathon
   - React Native
   - Expo
   - TypeScript
