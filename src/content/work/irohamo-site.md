@@ -1,8 +1,8 @@
 ---
-title: irohamo Site
+title: irohamo site
 publishDate: 2025-10-10 00:00:00
 img: ../../assets/work/favicon.svg
-img_alt: IrohaMo favicon.
+img_alt: irohamo favicon.
 description: |
     作品・経歴・活動をまとめる自作ポートフォリオサイト
 tags:
