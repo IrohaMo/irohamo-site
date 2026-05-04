@@ -10,7 +10,7 @@ tags:
   - Google Calendar API
   - Vertex AI
   - Google Maps Platform
-img: "../../assets/work/cocomate-appicon.png"
+img: "../../assets/works/cocomate-appicon.png"
 img_alt: "ココメイトのアイコン"
 ---
 

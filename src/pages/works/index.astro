@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Grid from '../../components/ui/Grid.astro';
+import PortfolioPreview from '../../components/cards/PortfolioPreview.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('works')).sort(
+	(a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+---
+
+<BaseLayout title="Works" description="制作物・プロジェクト一覧">
+	<main>
+		<section class="section">
+			<header class="section-header stack gap-2 lg:gap-4">
+				<p class="eyebrow">Portfolio</p>
+				<h1>Works</h1>
+				<p class="section-description">
+					これまでに制作したアプリ、Webサイト、開発プロジェクトの一覧です。
+				</p>
+			</header>
+
+			{
+				projects.length > 0 ? (
+					<div class="gallery">
+						<Grid variant="offset">
+							{projects.map((project) => (
+								<li>
+									<PortfolioPreview project={project} />
+								</li>
+							))}
+						</Grid>
+					</div>
+				) : (
+					<p class="empty">まだ表示できる制作物がありません。</p>
+				)
+			}
+		</section>
+	</main>
+</BaseLayout>
+
+<style>
+	.section {
+		padding-block: 6rem;
+	}
+
+	.section-header {
+		max-width: 56rem;
+		margin-inline: auto;
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+
+	.eyebrow {
+		font-size: 0.875rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--accent-regular);
+	}
+
+	h1 {
+		font-size: clamp(2.5rem, 6vw, 5rem);
+		line-height: 1;
+	}
+
+	.section-description {
+		color: var(--gray-300);
+		font-size: 1.05rem;
+		line-height: 1.8;
+	}
+
+	.gallery {
+		margin-top: 2rem;
+	}
+
+	.empty {
+		text-align: center;
+		color: var(--gray-400);
+	}
+</style>
