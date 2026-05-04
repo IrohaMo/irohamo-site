@@ -14,8 +14,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 // Read more about dynamic routes and this `getStaticPaths` function in the Astro docs:
 // https://docs.astro.build/en/core-concepts/routing/#dynamic-routes
 export async function getStaticPaths() {
-    const work = await getCollection('work');
-    return work.map((entry) => ({
+    const works = await getCollection('works');
+    return works.map((entry) => ({
         params: { slug: entry.id },
         props: { entry },
     }));
